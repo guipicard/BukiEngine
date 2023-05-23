@@ -1,0 +1,9 @@
+﻿  Engine.cpp
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(54,13): warning C4244: 'initialisation' : conversion de 'clock_t' en 'float', perte possible de données
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(59,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(61,10): warning C4244: '=' : conversion de 'const double' en 'float', perte possible de données
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(70,19): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(73,10): warning C4244: 'argument' : conversion de 'float' en 'DWORD', perte possible de données
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(139,19): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+D:\Guillaume\Engin\BukiEngine\TheEngine\sources\Engine.cpp(140,19): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+  TheEngine.vcxproj -> D:\Guillaume\Engin\BukiEngine\x64\Debug\TheEngine.lib
