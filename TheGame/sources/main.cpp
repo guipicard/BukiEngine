@@ -16,7 +16,3 @@ INT WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PSTR, _In_ INT) {
 	}
 	return 0;
 }
-//
-//int main(int argc, char** argv) {
-//
-//}

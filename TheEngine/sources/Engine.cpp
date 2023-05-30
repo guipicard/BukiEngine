@@ -3,6 +3,7 @@
 #include <time.h>
 #include <windows.h>
 
+// Carrer is never used ... it's more of an emotional thing. I am attached to that class and one day it will do great things!
 class Carrer {
 	Carrer() {
 		y = x = 0;
@@ -25,6 +26,7 @@ bool buki::Engine::Init(const std::string& title, int w, int h)
 	int _x = SDL_WINDOWPOS_CENTERED;
 	int _y = SDL_WINDOWPOS_CENTERED;
 
+	// Window can be minimize and reshaped
 	Uint32 _flag = SDL_WINDOW_TOOLTIP | SDL_WINDOW_RESIZABLE;
 
 	m_Window = SDL_CreateWindow(title.c_str(), _x, _y, w, h, _flag);
@@ -33,6 +35,7 @@ bool buki::Engine::Init(const std::string& title, int w, int h)
 		return false;
 	}
 
+	// Gpu Handling
 	_flag = SDL_RENDERER_ACCELERATED;
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, _flag);
 	if (!m_Renderer) {
@@ -43,13 +46,14 @@ bool buki::Engine::Init(const std::string& title, int w, int h)
 	return true;
 }
 
+
 void buki::Engine::Start() {
 	if (!m_IsInit) {
 		if (!Init("Unknown title", 800, 600)) {
 			return;
 		}
 	}
-	const float MS_PER_FRAME = 16.0f;
+	const float MS_PER_FRAME = 16.0f; // 16 to get 60 fps
 	m_IsRunning = true;
 	float _end = clock();
 	float _lag = 0.0f;
@@ -86,10 +90,9 @@ void buki::Engine::ProcessInput()
 {
 	SDL_Event _event;
 
-	//_keyStates[SDL_SCANCODE_D];
 	while (SDL_PollEvent(&_event)) {
 		switch (_event.type) {
-		case SDL_QUIT:
+		case SDL_QUIT: // exit ti desktop button or top right x to close window
 			Exit();
 			break;
 		case SDL_MOUSEBUTTONDOWN:
@@ -115,7 +118,7 @@ static float x = 0;
 static float y = 0;
 void buki::Engine::Update(float dt)
 {
-	const unsigned char* _keyStates = SDL_GetKeyboardState(nullptr);
+	const unsigned char* _keyStates = SDL_GetKeyboardState(nullptr); // reset key events
 	if (_keyStates[SDL_SCANCODE_W]) {
 		y -= 100 * dt;
 	}
