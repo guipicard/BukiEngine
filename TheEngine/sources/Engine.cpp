@@ -1,7 +1,9 @@
 #include "Engine.h"
 #include <SDL.h>
+#include <SDL_image.h>
 #include <time.h>
 #include <windows.h>
+#include <vld.h>
 
 // Carrer is never used ... it's more of an emotional thing. I am attached to that class and one day it will do great things!
 class Carrer {
@@ -18,6 +20,7 @@ public:
 
 bool buki::Engine::Init(const std::string& title, int w, int h)
 {
+	AllocConsole();
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		SDL_Log(SDL_GetError());
 		return false;
@@ -25,6 +28,9 @@ bool buki::Engine::Init(const std::string& title, int w, int h)
 
 	int _x = SDL_WINDOWPOS_CENTERED;
 	int _y = SDL_WINDOWPOS_CENTERED;
+
+	// Inputs
+	m_Input = new SdlInput();
 
 	// Window can be minimize and reshaped
 	Uint32 _flag = SDL_WINDOW_TOOLTIP | SDL_WINDOW_RESIZABLE;
@@ -88,49 +94,47 @@ void buki::Engine::Exit()
 
 void buki::Engine::ProcessInput()
 {
+
 	SDL_Event _event;
-
 	while (SDL_PollEvent(&_event)) {
-		switch (_event.type) {
-		case SDL_QUIT: // exit ti desktop button or top right x to close window
-			Exit();
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			SDL_MouseButtonEvent _buttonDown = _event.button;
-			SDL_Log("Button down : %d)", _buttonDown.button);
-			SDL_Log("at (%d, %d)", _buttonDown.x, _buttonDown.y);
-			break;
-		case SDL_MOUSEBUTTONUP:
-			SDL_MouseButtonEvent _buttonUp = _event.button;
-			SDL_Log("Button up : %d", _buttonUp.button);
-			SDL_Log("at (%d, %d)", _buttonUp.x, _buttonUp.y);
-			break;
-		case SDL_MOUSEMOTION:
-			SDL_MouseMotionEvent _motion = _event.motion;
-			SDL_Log("%d, %d", _motion.x, _motion.y);
-			break;
-
+		if (_event.type == SDL_QUIT)
+		{
+			Shutdown();
+			return;
 		}
 	}
+
+	if (m_Input != nullptr) 
+	{
+		m_Input->Update();
+	}
+
+
+
 }
 
 static float x = 0;
 static float y = 0;
 void buki::Engine::Update(float dt)
 {
-	const unsigned char* _keyStates = SDL_GetKeyboardState(nullptr); // reset key events
-	if (_keyStates[SDL_SCANCODE_W]) {
+
+	if (m_Input == nullptr) return;
+
+	const unsigned char* _keystates = SDL_GetKeyboardState(nullptr);
+	if (m_Input->IsKeyDown(EKey::EKEY_UP)) {
 		y -= 100 * dt;
 	}
-	if (_keyStates[SDL_SCANCODE_A]) {
+	if (m_Input->IsKeyDown(EKey::EKEY_LEFT)) {
 		x -= 100 * dt;
 	}
-	if (_keyStates[SDL_SCANCODE_S]) {
+	if (m_Input->IsKeyDown(EKey::EKEY_DOWN)) {
 		y += 100 * dt;
 	}
-	if (_keyStates[SDL_SCANCODE_D]) {
+	if (m_Input->IsKeyDown(EKey::EKEY_RIGHT)) {
 		x += 100 * dt;
 	}
+
+
 }
 
 void buki::Engine::Render()
@@ -150,12 +154,19 @@ void buki::Engine::Render()
 
 void buki::Engine::Shutdown()
 {
+	if (m_Input != nullptr) {
+		delete m_Input;
+		m_Input = nullptr;
+	}
+
 	SDL_DestroyRenderer(m_Renderer);
 	m_Renderer = nullptr;
 
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 
+	FreeConsole();
+
 	SDL_Quit();
-	m_IsRunning = false;
+	m_IsInit = m_IsRunning = false;
 }
